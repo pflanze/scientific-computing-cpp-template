@@ -8,6 +8,21 @@
 
 #include <vector>
 
+
+bool env(const char* name) {
+    auto val = getenv(name);
+    if (val) {
+        if (*val) {
+            return *val == '1';
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+
 template<typename T>
 T square(T x) {
     return x * x;
@@ -40,11 +55,16 @@ void bla(size_t n) {
     vec a;
     a.resize(n);
     auto b = a;
-    for (size_t i = 0; i < n; i++) {
-        pot(a, i);
+
+    if (env("t1")) {
+        for (size_t i = 0; i < n; i++) {
+            pot(a, i);
+        }
     }
 
-    pot2(b);
+    if (env("t2")) {
+        pot2(b);
+    }
 }
 
 
