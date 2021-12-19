@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+# Usage:
+# - set USE_SAN to any value to use the sanitizers
+# - set SAN, OPTIM, CPP or CFLAGS to override the default settings
+
+set -eu
+
+if [ "${USE_SAN-no}" = no ]; then
+    SAN=${SAN-}
+    sanprefix=
+else
+    SAN=${SAN--fsanitize=undefined -fsanitize=address -lubsan}
+    sanprefix=san-
+fi
+
+OPTIM=${OPTIM--O2}
+CFLAGS=${CFLAGS--fdiagnostics-color $OPTIM -Wall -gdwarf-4 -g3 -lstdc++}
+CPP=${CPP-g++}
+
+out=main
+
+if [ ! main.cpp -ot $out ]; then
+    set -x
+    $CPP $CFLAGS $SAN -std=c++20 -o $out main.cpp
+    set +x
+fi
+
+time ./main
+exit 0
+# ---
+
+for t in test*.txt; do
+    echo "Test $t:"
+    time ./$out < "$t" > result-"$t"
+done
+
+status=$(git status -s result-test*.txt)
+
+if [ -n "$status" ]; then
+    printf 'Test failures:\n%s\n' "$status"
+    false
+fi
+
