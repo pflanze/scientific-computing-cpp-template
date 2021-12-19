@@ -57,6 +57,9 @@ void bla(size_t n) {
     auto b = a;
 
     if (env("t1")) {
+#pragma omp parallel for					\
+    shared(a)                                                   \
+    schedule(dynamic,20)
         for (size_t i = 0; i < n; i++) {
             pot(a, i);
         }

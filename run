@@ -15,7 +15,7 @@ else
 fi
 
 OPTIM=${OPTIM--O2}
-CFLAGS=${CFLAGS--fdiagnostics-color $OPTIM -Wall -gdwarf-4 -g3 -lstdc++}
+CFLAGS=${CFLAGS--fdiagnostics-color $OPTIM -Wall -gdwarf-4 -g3  -pthread -fopenmp -lstdc++}
 CPP=${CPP-g++}
 
 out=main
