@@ -39,11 +39,11 @@ void zero(vec &v) {
 
 void pot2(vec &a) {
     auto n = a.size();
-    vec b;
-    b.resize(n);
-    zero(b);
+    // vec b;
+    // b.resize(n);
+    // zero(b);
     for (size_t i = 0; i < n; i++) {
-        b[i] = square(a[i]);
+        a[i] = square(a[i]);
     }
 }
 
