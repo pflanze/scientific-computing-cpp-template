@@ -1,1 +1,5 @@
 main
+san-main
+*.o
+.gdb_history
+*.html
