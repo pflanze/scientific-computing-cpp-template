@@ -51,9 +51,7 @@ void bla(size_t n, unsigned int repetitions) {
 
     time_this("t1", [&]() {
         if (env("parallel")) {
-#pragma omp parallel for					\
-    shared(a)                                                   \
-    schedule(dynamic,20)
+#pragma omp parallel for
             for (size_t i = 0; i < n; i++) {
                 pot(a, i);
             }
