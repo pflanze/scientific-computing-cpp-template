@@ -10,7 +10,7 @@ bool env(const char* name) {
     auto val = getenv(name);
     if (val) {
         if (*val) {
-            return *val == '1';
+            return (val[0] == '1') && (val[1] == 0);
         } else {
             return false;
         }
