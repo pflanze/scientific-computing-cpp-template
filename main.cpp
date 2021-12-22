@@ -30,6 +30,25 @@ void zero(vec &v) {
     }
 }
 
+void pot3_parallel(vec &a, vec &result) {
+    auto n = a.size();
+    auto n2 = result.size();
+    assert(n == n2);
+#pragma omp parallel for
+    for (size_t i = 0; i < n; i++) {
+        result[i] = square(a[i]);
+    }
+}
+
+void pot3(vec &a, vec &result) {
+    auto n = a.size();
+    auto n2 = result.size();
+    assert(n == n2);
+    for (size_t i = 0; i < n; i++) {
+        result[i] = square(a[i]);
+    }
+}
+
 void pot2(vec &a) {
     auto n = a.size();
     vec b;
@@ -62,8 +81,21 @@ void bla(size_t n, unsigned int repetitions) {
         }
     }, repetitions);
 
-    time_this("t2", [&]() {
+    time_this("pot2", [&]() {
         pot2(b);
+    }, repetitions);
+
+    vec result;
+    time_this("result = b", [&]() {
+        result = b;
+    }, repetitions);
+
+    time_this("pot3", [&]() {
+        pot3(b, result);
+    }, repetitions);
+
+    time_this("pot3_parallel", [&]() {
+        pot3_parallel(b, result);
     }, repetitions);
 }
 

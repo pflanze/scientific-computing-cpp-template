@@ -25,12 +25,12 @@ E.g. without parallelism
 
     $ repetitions=10 ./run 
     n = 10000000
-    TIME(t1, 10) in thread 140034841652224 of pid 1347249:
+    TIME(t1, 10) in thread 139804111436800 of pid 1353643:
     =name=	=seconds=
-    real	0.117471
-    cpu	0.117377
-    user	0.116214
-    sys	0.001164
+    real	0.113137
+    cpu	0.113130
+    user	0.111450
+    sys	0.001680
     =name=	=count=
     minflt	0	# page reclaims (soft page faults)
     majflt	0	# page faults (hard page faults)
@@ -38,14 +38,14 @@ E.g. without parallelism
     inblock	0	# block input operations
     oublock	0	# block output operations
     nvcsw	0	# voluntary context switches
-    nivcsw	2	# involuntary context switches
+    nivcsw	1	# involuntary context switches
 
-    TIME(t2, 10) in thread 140034841652224 of pid 1347249:
+    TIME(pot2, 10) in thread 139804111436800 of pid 1353643:
     =name=	=seconds=
-    real	0.686554
-    cpu	0.686253
-    user	0.422914
-    sys	0.263340
+    real	0.636802
+    cpu	0.636644
+    user	0.372706
+    sys	0.263939
     =name=	=count=
     minflt	195320	# page reclaims (soft page faults)
     majflt	0	# page faults (hard page faults)
@@ -53,17 +53,62 @@ E.g. without parallelism
     inblock	0	# block input operations
     oublock	0	# block output operations
     nvcsw	0	# voluntary context switches
-    nivcsw	5	# involuntary context switches
+    nivcsw	7	# involuntary context switches
+
+    TIME(result = b, 10) in thread 139804111436800 of pid 1353643:
+    =name=	=seconds=
+    real	0.159072
+    cpu	0.159068
+    user	0.135328
+    sys	0.023743
+    =name=	=count=
+    minflt	19532	# page reclaims (soft page faults)
+    majflt	0	# page faults (hard page faults)
+    nswap	0	# swaps
+    inblock	0	# block input operations
+    oublock	0	# block output operations
+    nvcsw	0	# voluntary context switches
+    nivcsw	1	# involuntary context switches
+
+    TIME(pot3, 10) in thread 139804111436800 of pid 1353643:
+    =name=	=seconds=
+    real	0.194419
+    cpu	0.194307
+    user	0.194310
+    sys	0.000000
+    =name=	=count=
+    minflt	0	# page reclaims (soft page faults)
+    majflt	0	# page faults (hard page faults)
+    nswap	0	# swaps
+    inblock	0	# block input operations
+    oublock	0	# block output operations
+    nvcsw	0	# voluntary context switches
+    nivcsw	3	# involuntary context switches
+
+    TIME(pot3_parallel, 10) in thread 139804111436800 of pid 1353643:
+    =name=	=seconds=
+    real	0.192760
+    cpu	0.190365
+    user	0.375401
+    sys	0.000000
+    =name=	=count=
+    minflt	3	# page reclaims (soft page faults)
+    majflt	0	# page faults (hard page faults)
+    nswap	0	# swaps
+    inblock	0	# block input operations
+    oublock	0	# block output operations
+    nvcsw	4	# voluntary context switches
+    nivcsw	25	# involuntary context switches
 
 With parallelism (only `t1` changes via the `parallel` setting):
 
     $ parallel=1 repetitions=10 ./run 
     n = 10000000
-    TIME(t1, 10) in thread 139894343400448 of pid 1347261:
+    TIME(t1, 10) in thread 140675027364864 of pid 1353662:
     =name=	=seconds=
-    real	0.286388
-    cpu	0.285097
-    user	0.566525
+    real	0.107637
+    cpu	0.107387
+    user	0.213387
     sys	0.000000
     =name=	=count=
     minflt	2	# page reclaims (soft page faults)
@@ -72,20 +117,7 @@ With parallelism (only `t1` changes via the `parallel` setting):
     inblock	0	# block input operations
     oublock	0	# block output operations
     nvcsw	0	# voluntary context switches
-    nivcsw	38	# involuntary context switches
+    nivcsw	8	# involuntary context switches
 
-    TIME(t2, 10) in thread 139894343400448 of pid 1347261:
-    =name=	=seconds=
-    real	0.690171
-    cpu	0.689655
-    user	0.452491
-    sys	0.238824
-    =name=	=count=
-    minflt	195320	# page reclaims (soft page faults)
-    majflt	0	# page faults (hard page faults)
-    nswap	0	# swaps
-    inblock	0	# block input operations
-    oublock	0	# block output operations
-    nvcsw	1	# voluntary context switches
-    nivcsw	10	# involuntary context switches
+    ... (omitted)
 
