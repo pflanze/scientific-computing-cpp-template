@@ -18,21 +18,56 @@ OPTIM=${OPTIM--O2}
 CFLAGS=${CFLAGS--fdiagnostics-color $OPTIM -Wall -gdwarf-4 -g3  -pthread -fopenmp -lstdc++}
 CPP=${CPP-g++}
 
-out=main
 
-if [ ! main.cpp -ot $out ]; then
-    set -x
-    $CPP $CFLAGS $SAN -std=c++20 -o $out main.cpp
-    set +x
+run() {
+    echo "+ $@"
+    "$@"
+}
+
+mainout=${sanprefix}main
+
+need_recompile=0
+check() {
+    if [ ! -e "$mainout" ]; then
+        need_recompile=1
+        return 0
+    fi
+    for cfile in *.cpp; do
+        bn=$(basename "$cfile" .cpp)
+        outp="$bn.o"
+        if [ ! "$cfile" -ot "$outp" ]; then
+            need_recompile=1
+            return 0
+        fi
+        for hfile in *.hpp; do
+            if [ ! "$hfile" -ot "$outp" ]; then
+                need_recompile=1
+                return 0
+            fi
+        done
+    done
+}
+check
+
+if [ $need_recompile = 1 ]; then
+    outputs=
+    for inp in *.cpp; do
+        bn=$(basename "$inp" .cpp)
+        outp="$bn.o"
+        outputs="$outputs $outp"
+        run $CPP -c $CFLAGS $SAN -std=c++20 -o "$outp" "$inp"
+    done
+
+    run $CPP $CFLAGS $SAN -std=c++20 $outputs -o "$mainout" 
 fi
 
-time ./main
+time ./"$mainout"
 exit 0
 # ---
 
 for t in test*.txt; do
     echo "Test $t:"
-    time ./$out < "$t" > result-"$t"
+    time ./"$mainout" < "$t" > result-"$t"
 done
 
 status=$(git status -s result-test*.txt)
