@@ -10,9 +10,10 @@
 #include <string>
 #include <cstdint>
 #include <cassert>
-
 #include <vector>
 #include "env.hpp"
+#include "time.hpp"
+
 
 
 template<typename T>
@@ -43,12 +44,12 @@ void pot(vec &a, size_t index) {
     a[index] = square(a[index]);
 }
 
-void bla(size_t n) {
+void bla(size_t n, unsigned int repetitions) {
     vec a;
     a.resize(n);
     auto b = a;
 
-    if (env("t1")) {
+    time_this("t1", [&]() {
         if (env("parallel")) {
 #pragma omp parallel for					\
     shared(a)                                                   \
@@ -61,18 +62,18 @@ void bla(size_t n) {
                 pot(a, i);
             }
         }
-    }
+    }, repetitions);
 
-    if (env("t2")) {
+    time_this("t2", [&]() {
         pot2(b);
-    }
+    }, repetitions);
 }
 
 
 int main() {
-    size_t n;
-    std::cin >> n;
+    auto n = env_integer<size_t>("n", 10000000);
+    auto repetitions = env_integer<unsigned int>("repetitions", 1);
     std::cout << "n = " << n << std::endl;
-    bla(n);
+    bla(n, repetitions);
     return 0;
 }

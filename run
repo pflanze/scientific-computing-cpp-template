@@ -61,7 +61,7 @@ if [ $need_recompile = 1 ]; then
     run $CPP $CFLAGS $SAN -std=c++20 $outputs -o "$mainout" 
 fi
 
-time ./"$mainout"
+./"$mainout"
 exit 0
 # ---
 
