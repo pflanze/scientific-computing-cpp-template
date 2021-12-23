@@ -15,7 +15,7 @@ else
 fi
 
 PARALLEL_FLAGS="-pthread -fopenmp"
-OPTIM=${OPTIM--O2}
+OPTIM=${OPTIM--O3}
 CFLAGS=${CFLAGS--fdiagnostics-color $OPTIM -Wall -gdwarf-4 -g3 $PARALLEL_FLAGS}
 LDFLAGS="-lstdc++ $PARALLEL_FLAGS"
 CPP=${CPP-g++}
