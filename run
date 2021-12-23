@@ -8,10 +8,10 @@ set -eu
 
 if [ "${USE_SAN-no}" = no ]; then
     SAN=${SAN-}
-    sanprefix=
+    prefix=out
 else
     SAN=${SAN--fsanitize=undefined -fsanitize=address -lubsan}
-    sanprefix=san-
+    prefix=out-san
 fi
 
 OPTIM=${OPTIM--O2}
@@ -24,7 +24,9 @@ run() {
     "$@"
 }
 
-mainout=${sanprefix}main
+mkdir -p "$prefix"
+
+mainout=$prefix/main
 
 need_recompile=0
 check() {
@@ -34,7 +36,7 @@ check() {
     fi
     for cfile in *.cpp; do
         bn=$(basename "$cfile" .cpp)
-        outp="$bn.o"
+        outp="$prefix/$bn.o"
         if [ ! "$cfile" -ot "$outp" ]; then
             need_recompile=1
             return 0
@@ -53,7 +55,7 @@ if [ $need_recompile = 1 ]; then
     outputs=
     for inp in *.cpp; do
         bn=$(basename "$inp" .cpp)
-        outp="$bn.o"
+        outp="$prefix/$bn.o"
         outputs="$outputs $outp"
         run $CPP -c $CFLAGS $SAN -std=c++20 -o "$outp" "$inp"
     done
@@ -61,13 +63,13 @@ if [ $need_recompile = 1 ]; then
     run $CPP $CFLAGS $SAN -std=c++20 $outputs -o "$mainout" 
 fi
 
-./"$mainout"
+"$mainout"
 exit 0
 # ---
 
 for t in test*.txt; do
     echo "Test $t:"
-    time ./"$mainout" < "$t" > result-"$t"
+    time "$mainout" < "$t" > result-"$t"
 done
 
 status=$(git status -s result-test*.txt)
