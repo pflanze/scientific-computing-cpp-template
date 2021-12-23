@@ -14,8 +14,10 @@ else
     prefix=out-san
 fi
 
+PARALLEL_FLAGS="-pthread -fopenmp"
 OPTIM=${OPTIM--O2}
-CFLAGS=${CFLAGS--fdiagnostics-color $OPTIM -Wall -gdwarf-4 -g3  -pthread -fopenmp -lstdc++}
+CFLAGS=${CFLAGS--fdiagnostics-color $OPTIM -Wall -gdwarf-4 -g3 $PARALLEL_FLAGS}
+LDFLAGS="-lstdc++ $PARALLEL_FLAGS"
 CPP=${CPP-g++}
 
 
@@ -60,7 +62,7 @@ if [ $need_recompile = 1 ]; then
         run $CPP -c $CFLAGS $SAN -std=c++20 -o "$outp" "$inp"
     done
 
-    run $CPP $CFLAGS $SAN -std=c++20 $outputs -o "$mainout" 
+    run $CPP $LDFLAGS $SAN -std=c++20 $outputs -o "$mainout" 
 fi
 
 "$mainout"
