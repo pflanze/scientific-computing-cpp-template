@@ -17,11 +17,13 @@
 
 // Mandelbrot set
 
+typedef double mbfloat;
+
 static
-unsigned int mandelbrot_numiterations(double x0, double y0,
+unsigned int mandelbrot_numiterations(mbfloat x0, mbfloat y0,
                                       unsigned int maxiter) {
-    double x = 0;
-    double y = 0;
+    mbfloat x = 0;
+    mbfloat y = 0;
     unsigned int i = 0;
     while ((x*x + y*y <= 2*3) && (i < maxiter)) {
         auto xtmp = x*x - y*y + x0;
@@ -35,12 +37,12 @@ unsigned int mandelbrot_numiterations(double x0, double y0,
 
 auto mandelbrot_maxiterations =
     env_integer<unsigned int>("maxiterations", 500);
-double mandelbrot_x =
-    (double)env_integer<int64_t>("x_u", -1416000) / 1e6;
-double mandelbrot_y =
-    (double)env_integer<int64_t>("y_u", -50000) / 1e6;
-double mandelbrot_span =
-    (double)env_integer<int64_t>("span_u", 150000) / 1e6;
+mbfloat mandelbrot_x =
+    (mbfloat)env_integer<int64_t>("x_u", -1416000) / 1e6;
+mbfloat mandelbrot_y =
+    (mbfloat)env_integer<int64_t>("y_u", -50000) / 1e6;
+mbfloat mandelbrot_span =
+    (mbfloat)env_integer<int64_t>("span_u", 150000) / 1e6;
 
 void
 mandelbrot(PGMMatrix8 &m) {
