@@ -3,3 +3,4 @@ san-main
 *.o
 .gdb_history
 *.html
+*.pgm
