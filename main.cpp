@@ -15,6 +15,13 @@
 #include "time.hpp"
 #include "pnm.hpp"
 
+
+template<typename T>
+T square(T x) {
+    return x * x;
+}
+
+
 // Mandelbrot set
 
 typedef double mbfloat;
@@ -25,8 +32,8 @@ unsigned int mandelbrot_numiterations(mbfloat x0, mbfloat y0,
     mbfloat x = 0;
     mbfloat y = 0;
     unsigned int i = 0;
-    while ((x*x + y*y <= 2*2) && (i < maxiter)) {
-        auto xtmp = x*x - y*y + x0;
+    while ((square(x) + square(y) <= square(2)) && (i < maxiter)) {
+        auto xtmp = square(x) - square(y) + x0;
         y = 2*x*y + y0;
         x = xtmp;
         i++;
@@ -86,11 +93,6 @@ void run_mandelbrot(unsigned int repetitions) {
 
 
 // More standard operations
-
-template<typename T>
-T square(T x) {
-    return x * x;
-}
 
 typedef std::vector<double> vec;
 
