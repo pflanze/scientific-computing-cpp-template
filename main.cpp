@@ -32,13 +32,14 @@ unsigned int mandelbrot_numiterations(mbfloat x0, mbfloat y0,
     mbfloat x = 0;
     mbfloat y = 0;
     unsigned int i = 0;
-    while ((square(x) + square(y) <= square(2)) && (i < maxiter)) {
-        auto xtmp = square(x) - square(y) + x0;
+    while (i < maxiter) {
+        auto xx = square(x);
+        auto yy = square(y);
+        if (xx + yy > square(2)) return i;
         y = 2*x*y + y0;
-        x = xtmp;
+        x = xx - yy + x0;
         i++;
     }
-    //WARN("mandelbrot_numiterations("<<x0<<", "<<y0<<", "<<maxiter<<")="<<i);
     return i;
 }
 
