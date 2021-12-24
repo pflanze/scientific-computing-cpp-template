@@ -25,7 +25,7 @@ unsigned int mandelbrot_numiterations(mbfloat x0, mbfloat y0,
     mbfloat x = 0;
     mbfloat y = 0;
     unsigned int i = 0;
-    while ((x*x + y*y <= 2*3) && (i < maxiter)) {
+    while ((x*x + y*y <= 2*2) && (i < maxiter)) {
         auto xtmp = x*x - y*y + x0;
         y = 2*x*y + y0;
         x = xtmp;
